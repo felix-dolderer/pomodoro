@@ -1,9 +1,9 @@
 <script setup lang="ts">
 definePageMeta({
-  middleware: ["hanko-logged-out"],
+  middleware: ["hanko-logged-in"],
 });
 
-const afterLogin = async () =>
+const loginTest = async () =>
   $fetch("/api/login", {
     method: "POST",
     body: await useHanko()?.user.getCurrent(),
@@ -11,6 +11,6 @@ const afterLogin = async () =>
 </script>
 
 <template>
-  <hanko-auth />
-  <hanko-events @onAuthFlowCompleted="afterLogin()" />
+  <hanko-profile />
+  <UButton @click="loginTest" color="black">Test</UButton>
 </template>
