@@ -19,11 +19,13 @@ function removeTimer(id: string) {
   <div
     class="h-screen -mt-20 overscroll-y-none place-content-center grid gap-4"
   >
-    <PomodoroTimer
-      v-for="timer in allTimers"
-      :key="timer.id"
-      @remove-timer="removeTimer(timer.id)"
-    />
+    <ClientOnly>
+      <PomodoroTimer
+        v-for="timer in allTimers"
+        :key="timer.id"
+        @remove-timer="removeTimer(timer.id)"
+      />
+    </ClientOnly>
     <UButton @click="addTimer" color="black" class="mx-auto w-40">
       <span class="w-full text-center">
         {{ allTimers.length === 0 ? "Add First Timer" : "Add Timer" }}

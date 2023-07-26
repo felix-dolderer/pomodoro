@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   plugins: [{ src: "~/plugins/vercel.ts", mode: "client" }],
   devtools: { enabled: true },
   hanko: { apiURL: "" },
-  ui: { icons: ["simple-icons"] },
+  ui: { icons: ["simple-icons"], safelistColors: ["yellow"] },
   nitro: {
     esbuild: {
       options: {

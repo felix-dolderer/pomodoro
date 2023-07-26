@@ -1,3 +1,34 @@
+<script setup lang="ts">
+const colorMode = useColorMode();
+const showMenu = ref(false);
+
+// Computed
+
+const color = computed(() =>
+  colorMode.value === "dark" ? "#18181b" : "white"
+);
+
+// Head
+
+useHead({
+  titleTemplate: (title) => {
+    if (!title) return "Felix Pomodoro";
+    return title.includes("Pomodoro") ? title : `${title} - Felix Pomodoro`;
+  },
+  meta: [
+    {
+      name: "viewport",
+      content: "width=device-width, initial-scale=1, maximum-scale=1",
+    },
+    { key: "theme-color", name: "theme-color", content: color },
+  ],
+  link: [{ rel: "icon", type: "image/svg+xml", href: "/icon.svg" }],
+  htmlAttrs: {
+    lang: "en",
+  },
+});
+</script>
+
 <template>
   <div>
     <header
@@ -43,7 +74,9 @@
                 <template #header>
                   <h2 class="text-xl font-bold">Settings</h2>
                 </template>
-                <ConfigDefaultTimer />
+                <ClientOnly>
+                  <ConfigDefaultTimer />
+                </ClientOnly>
               </UCard>
             </USlideover>
           </div>
@@ -66,33 +99,3 @@
     </UNotifications>
   </div>
 </template>
-<script setup lang="ts">
-const colorMode = useColorMode();
-const showMenu = ref(false);
-
-// Computed
-
-const color = computed(() =>
-  colorMode.value === "dark" ? "#18181b" : "white"
-);
-
-// Head
-
-useHead({
-  titleTemplate: (title) => {
-    if (!title) return "Felix Pomodoro";
-    return title.includes("Pomodoro") ? title : `${title} - Felix Pomodoro`;
-  },
-  meta: [
-    {
-      name: "viewport",
-      content: "width=device-width, initial-scale=1, maximum-scale=1",
-    },
-    { key: "theme-color", name: "theme-color", content: color },
-  ],
-  link: [{ rel: "icon", type: "image/svg+xml", href: "/icon.svg" }],
-  htmlAttrs: {
-    lang: "en",
-  },
-});
-</script>
