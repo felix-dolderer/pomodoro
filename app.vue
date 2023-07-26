@@ -32,6 +32,20 @@
               icon="i-simple-icons-github"
               class="hidden lg:inline-flex"
             />
+            <UButton
+              @click="showMenu = true"
+              icon="i-heroicons-adjustments-horizontal"
+              color="black"
+              variant="ghost"
+            />
+            <USlideover v-model="showMenu">
+              <UCard class="flex flex-col flex-1">
+                <template #header>
+                  <h2 class="text-xl font-bold">Settings</h2>
+                </template>
+                <ConfigDefaultTimer />
+              </UCard>
+            </USlideover>
           </div>
         </div>
       </UContainer>
@@ -52,9 +66,9 @@
     </UNotifications>
   </div>
 </template>
-
 <script setup lang="ts">
 const colorMode = useColorMode();
+const showMenu = ref(false);
 
 // Computed
 

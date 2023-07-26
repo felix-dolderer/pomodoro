@@ -25,6 +25,7 @@
     "@vercel/postgres": "^0.4.0",
     "drizzle-orm": "^0.27.2",
     "nanoid": "^4.0.2",
+    "tailwind-merge": "^1.14.0",
     "zod": "^3.21.4"
   }
 }
