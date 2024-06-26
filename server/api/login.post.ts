@@ -13,7 +13,9 @@ export default defineEventHandler(async (event) => {
     return { status: 400, body: { message: "Invalid body" } };
   }
 
-  const userDataSchema = z.object({ id: z.string(), email: z.string() });
+  const userDataSchema = z
+    .object({ id: z.string(), email: z.string() })
+    .strip();
   const userData = userDataSchema.safeParse(body);
 
   if (!userData.success) {

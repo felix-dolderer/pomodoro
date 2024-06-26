@@ -15,7 +15,7 @@ const timerPaused = ref(false);
 const timerFinished = ref(false);
 
 const timerEnd = ref<Date>(new Date());
-let timerTick: NodeJS.Timer;
+let timerTick: NodeJS.Timeout;
 let timerAudio: HTMLAudioElement;
 
 function timeTicker() {
