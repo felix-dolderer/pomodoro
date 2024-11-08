@@ -2,9 +2,19 @@
 import { z } from "zod";
 import { twMerge } from "tailwind-merge";
 
-defineEmits<{
+const emits = defineEmits<{
   (e: "removeTimer"): void;
+  (e: "timerStarted"): void;
+  (e: "timerFinished"): void;
 }>();
+
+const props = defineProps<{
+  startTimer?: boolean;
+}>();
+
+watch(() => props.startTimer, (startTimer) => {
+  if (startTimer) startSession();
+});
 
 const timerTitle = ref("");
 
@@ -16,21 +26,31 @@ const timerFinished = ref(false);
 
 const timerEnd = ref<Date>(new Date());
 let timerTick: NodeJS.Timeout;
-let timerAudio: HTMLAudioElement;
+let timerAudio: HTMLAudioElement | undefined;
+
+const DATE_TIME_START_INDEX = 11;
+const DATE_TIME_END_INDEX = 21;
 
 function timeTicker() {
   const remainingTime =
     Math.round((timerEnd.value.getTime() - Date.now()) / 100) * 100;
-  pomodoroTimer.value = new Date(remainingTime).toISOString().substring(11, 23);
-  if (remainingTime <= 0) {
-    timerFinished.value = true;
-    timerPaused.value = false;
-    clearInterval(timerTick);
-    timerAudio = new Audio(
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-    );
-    timerAudio.play();
-  }
+  pomodoroTimer.value = new Date(remainingTime)
+    .toISOString()
+    .substring(DATE_TIME_START_INDEX, DATE_TIME_END_INDEX);
+  if (remainingTime > 0) return;
+
+  timerFinished.value = true;
+  timerPaused.value = false;
+  clearInterval(timerTick);
+  timerAudio = new Audio(
+    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+  );
+  timerAudio.play();
+  setTimeout(() => {
+    timerAudio?.pause();
+    timerAudio?.remove();
+  }, 10_000);
+  emits('timerFinished');
 }
 
 const startPauseResumeText = computed(() => {
@@ -38,6 +58,7 @@ const startPauseResumeText = computed(() => {
   else if (timerPaused.value) return "Resume";
   else return "Pause";
 });
+
 function startPauseResume() {
   if (!timerActive.value) startSession();
   else if (timerPaused.value) resumeSession();
@@ -63,6 +84,7 @@ function _startSession() {
   );
 
   timerTick = setInterval(timeTicker, 100);
+  emits('timerStarted');
 }
 
 function pauseSession() {
@@ -83,6 +105,11 @@ function stopSession() {
   timerAudio?.pause();
   timerAudio?.remove();
   pomodoroTimer.value = totalTimer.value;
+}
+
+function removeTimer() {
+  stopSession();
+  emits('removeTimer')
 }
 
 function getTimerClasses() {
@@ -108,8 +135,8 @@ onUnmounted(() => clearInterval(timerTick));
       <UInput
         v-model="pomodoroTimer"
         :disabled="timerActive"
-        type="time"
-        step="0.1"
+        :type="timerActive ? 'text' : 'time'"
+        step="1"
         :class="getTimerClasses"
       />
     </div>
@@ -130,7 +157,7 @@ onUnmounted(() => clearInterval(timerTick));
       Stop
     </UButton>
     <UButton
-      @click="$emit('removeTimer')"
+      @click="removeTimer"
       icon="i-heroicons-x-circle"
       variant="outline"
       color="red"

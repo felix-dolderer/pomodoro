@@ -4,7 +4,7 @@ const emits = defineEmits<{
 }>();
 
 const defaultTimer = useDefaultTimer();
-const configDefaultTimer = ref("00:30:00.000");
+const configDefaultTimer = ref(defaultTimer.value);
 
 function saveDefaultTimer() {
   defaultTimer.value = configDefaultTimer.value;
@@ -13,20 +13,13 @@ function saveDefaultTimer() {
   useToast().add({ title: "Successfully changed default timer" });
   emits("save");
 }
-
-onBeforeMount(() => {
-  const initialDefaultTimer = initDefaultTimer();
-
-  defaultTimer.value = initialDefaultTimer;
-  configDefaultTimer.value = initialDefaultTimer;
-});
 </script>
 
 <template>
-  <div class="grid gap-2">
+  <form @submit.prevent="saveDefaultTimer" class="grid gap-2">
     <UFormGroup name="defaultTimer" label="Default Timer Value">
-      <UInput v-model="configDefaultTimer" type="time" step="0.1" />
+      <UInput v-model="configDefaultTimer" type="time" step="1" />
     </UFormGroup>
-    <UButton block @click="saveDefaultTimer">Save Default Timer</UButton>
-  </div>
+    <UButton block type="submit">Save Default Timer</UButton>
+  </form>
 </template>

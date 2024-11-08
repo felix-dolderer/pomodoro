@@ -52,9 +52,9 @@ useHead({
             <ColorModeButton />
 
             <SocialButton
-              to="https://twitter.com/felixdolderer"
+              to="https://bsky.app/profile/felixdolderer.com"
               target="_blank"
-              icon="i-simple-icons-twitter"
+              icon="i-simple-icons-bluesky"
               class="hidden lg:inline-flex"
             />
             <SocialButton
@@ -76,6 +76,8 @@ useHead({
                 </template>
                 <ClientOnly>
                   <ConfigDefaultTimer />
+                  <UDivider class="my-4" />
+                  <ConfigAutoPlay />
                 </ClientOnly>
               </UCard>
             </USlideover>
