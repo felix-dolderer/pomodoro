@@ -17,6 +17,7 @@
     "@nuxtjs/hanko": "^0.7.0",
     "@types/node": "^22.9.0",
     "nuxt": "^3.14.159",
+    "prettier": "^3.3.3",
     "undici": "^6.20.1"
   },
   "dependencies": {

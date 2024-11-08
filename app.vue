@@ -1,19 +1,17 @@
 <script setup lang="ts">
-const colorMode = useColorMode();
-const showMenu = ref(false);
+const colorMode = useColorMode()
+const showMenu = ref(false)
 
 // Computed
 
-const color = computed(() =>
-  colorMode.value === "dark" ? "#18181b" : "white"
-);
+const color = computed(() => (colorMode.value === "dark" ? "#18181b" : "white"))
 
 // Head
 
 useHead({
   titleTemplate: (title) => {
-    if (!title) return "Felix Pomodoro";
-    return title.includes("Pomodoro") ? title : `${title} - Felix Pomodoro`;
+    if (!title) return "Felix Pomodoro"
+    return title.includes("Pomodoro") ? title : `${title} - Felix Pomodoro`
   },
   meta: [
     {
@@ -26,7 +24,7 @@ useHead({
   htmlAttrs: {
     lang: "en",
   },
-});
+})
 </script>
 
 <template>

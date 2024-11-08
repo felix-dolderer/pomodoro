@@ -1,25 +1,39 @@
 <script setup lang="ts">
 const emits = defineEmits<{
-  (e: "save"): void;
-}>();
+  (e: "save"): void
+}>()
 
-const timerPreset = useTimerPreset();
-const configTimerPreset = ref(timerPreset.value);
+const timerPreset = useTimerPreset()
+const configTimerPreset = ref(timerPreset.value)
 
 function saveTimerPreset() {
-  timerPreset.value = configTimerPreset.value;
-  localStorage.setItem("timerPreset", timerPreset.value);
+  timerPreset.value = configTimerPreset.value
+  localStorage.setItem("timerPreset", timerPreset.value)
 
-  useToast().add({ title: "Successfully changed default timer" });
-  emits("save");
+  useToast().add({ title: "Successfully changed default timer" })
+  emits("save")
 }
 </script>
 
 <template>
-  <form @submit.prevent="saveTimerPreset" class="grid gap-2">
-    <UFormGroup name="timerPreset" label="Default Timer Value">
-      <UInput v-model="configTimerPreset" type="time" step="1" />
+  <form
+    @submit.prevent="saveTimerPreset"
+    class="grid gap-2"
+  >
+    <UFormGroup
+      name="timerPreset"
+      label="Default Timer Value"
+    >
+      <UInput
+        v-model="configTimerPreset"
+        type="time"
+        step="1"
+      />
     </UFormGroup>
-    <UButton block type="submit">Save Default Timer</UButton>
+    <UButton
+      block
+      type="submit"
+      >Save Default Timer</UButton
+    >
   </form>
 </template>

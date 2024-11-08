@@ -6,4 +6,4 @@ export default defineNuxtConfig({
   ui: { safelistColors: ["yellow"] },
   nitro: { esbuild: { options: { target: "esnext" } } },
   compatibilityDate: "2024-11-08",
-});
+})
