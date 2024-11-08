@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { nanoid } from "nanoid";
 
-definePageMeta({
-  middleware: ["hanko-logged-in"],
-});
+definePageMeta({ middleware: "hanko-logged-in" });
+
 const allTimers = ref<{ id: string, startTimer?: boolean }[]>([{ id: nanoid(), startTimer: false }]);
 
 function addTimer() {

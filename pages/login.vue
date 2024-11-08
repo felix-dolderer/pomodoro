@@ -1,7 +1,5 @@
 <script setup lang="ts">
-definePageMeta({
-  middleware: ["hanko-logged-out"],
-});
+definePageMeta({ middleware: "hanko-logged-out" });
 </script>
 
 <template>

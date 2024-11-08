@@ -18,7 +18,7 @@ watch(() => props.startTimer, (startTimer) => {
 
 const timerTitle = ref("");
 
-const totalTimer = ref(useDefaultTimer().value);
+const totalTimer = ref(useTimerPreset().value);
 const pomodoroTimer = ref(totalTimer.value);
 const timerActive = ref(false);
 const timerPaused = ref(false);

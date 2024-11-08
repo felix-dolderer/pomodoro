@@ -75,7 +75,7 @@ useHead({
                   <h2 class="text-xl font-bold">Settings</h2>
                 </template>
                 <ClientOnly>
-                  <ConfigDefaultTimer />
+                  <ConfigTimerPreset />
                   <UDivider class="my-4" />
                   <ConfigAutoPlay />
                 </ClientOnly>
