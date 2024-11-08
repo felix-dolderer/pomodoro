@@ -31,7 +31,7 @@ function timerFinished(id: string) {
 
   removeTimer(id)
 
-  allTimers.value.push(finishedTimer)
+  if (!useAutoRemove().value) allTimers.value.push(finishedTimer)
 
   if (
     !useAutoPlay().value ||

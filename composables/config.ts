@@ -2,6 +2,7 @@
 
 export const LOCAL_STORAGE_TOKENS = Object.freeze({
   AUTO_PLAY: "autoPlay",
+  AUTO_REMOVE: "autoRemove",
   TIMER_PRESET: "timerPreset",
 })
 
@@ -33,6 +34,35 @@ function initAutoPlay() {
 }
 
 // #endregion autoPlay
+
+// #region autoRemove
+
+// localStorage maybe undefined due to SSR
+// components that use this composable should be wrapped in <ClientOnly>
+export const useAutoRemove = () =>
+  useState<boolean>(LOCAL_STORAGE_TOKENS.AUTO_REMOVE, initAutoRemove)
+
+function initAutoRemove() {
+  const autoRemoveDefault = true
+
+  try {
+    if (!localStorage) return autoRemoveDefault
+  } catch (_) {
+    return autoRemoveDefault
+  }
+
+  const autoRemoveStored = localStorage.getItem(
+    LOCAL_STORAGE_TOKENS.AUTO_REMOVE,
+  )
+
+  if (autoRemoveStored === null) {
+    return autoRemoveDefault
+  } else {
+    return autoRemoveStored === "true"
+  }
+}
+
+// #endregion autoRemove
 
 // #region timerPreset
 

@@ -76,6 +76,8 @@ useHead({
                   <ConfigTimerPreset />
                   <UDivider class="my-4" />
                   <ConfigAutoPlay />
+                  <UDivider class="my-4" />
+                  <ConfigAutoRemove />
                 </ClientOnly>
               </UCard>
             </USlideover>
