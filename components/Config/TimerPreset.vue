@@ -8,7 +8,7 @@ const configTimerPreset = ref(timerPreset.value)
 
 function saveTimerPreset() {
   timerPreset.value = configTimerPreset.value
-  localStorage.setItem("timerPreset", timerPreset.value)
+  localStorage.setItem(LOCAL_STORAGE_TOKENS.TIMER_PRESET, timerPreset.value)
 
   useToast().add({ title: "Successfully changed default timer" })
   emits("save")

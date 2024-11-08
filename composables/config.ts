@@ -1,8 +1,18 @@
+// #region general
+
+export const LOCAL_STORAGE_TOKENS = Object.freeze({
+  AUTO_PLAY: "autoPlay",
+  TIMER_PRESET: "timerPreset",
+})
+
+// #endregion general
+
 // #region autoPlay
 
 // localStorage maybe undefined due to SSR
 // components that use this composable should be wrapped in <ClientOnly>
-export const useAutoPlay = () => useState<boolean>("autoPlay", initAutoPlay)
+export const useAutoPlay = () =>
+  useState<boolean>(LOCAL_STORAGE_TOKENS.AUTO_PLAY, initAutoPlay)
 
 function initAutoPlay() {
   const autoPlayDefault = true
@@ -13,7 +23,7 @@ function initAutoPlay() {
     return autoPlayDefault
   }
 
-  const autoPlayStored = localStorage.getItem("autoPlay")
+  const autoPlayStored = localStorage.getItem(LOCAL_STORAGE_TOKENS.AUTO_PLAY)
 
   if (autoPlayStored === null) {
     return autoPlayDefault
@@ -29,7 +39,7 @@ function initAutoPlay() {
 // localStorage maybe undefined due to SSR
 // components that use this composable should be wrapped in <ClientOnly>
 export const useTimerPreset = () =>
-  useState<string>("timerPreset", initTimerPreset)
+  useState<string>(LOCAL_STORAGE_TOKENS.TIMER_PRESET, initTimerPreset)
 
 function initTimerPreset() {
   const timerPresetDefault = "00:30:00.000"
@@ -40,7 +50,9 @@ function initTimerPreset() {
     return timerPresetDefault
   }
 
-  const storedTimerPreset = localStorage.getItem("timerPreset")
+  const storedTimerPreset = localStorage.getItem(
+    LOCAL_STORAGE_TOKENS.TIMER_PRESET,
+  )
 
   const timerRegex = /^(\d{2}):(\d{2}):(\d{2})?$/
 
