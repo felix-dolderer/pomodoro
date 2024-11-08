@@ -12,10 +12,19 @@ const props = defineProps<{
   startTimer?: boolean
 }>()
 
+enum TimerStatus {
+  READY,
+  ACTIVE,
+  PAUSED,
+  FINISHED,
+}
+
 watch(
   () => props.startTimer,
   (startTimer) => {
-    if (startTimer) startSession()
+    if (startTimer && timerStatus.value === TimerStatus.READY) {
+      startSession()
+    }
   },
 )
 
@@ -23,12 +32,12 @@ const timerTitle = ref("")
 
 const totalTimer = ref(useTimerPreset().value)
 const pomodoroTimer = ref(totalTimer.value)
-const timerActive = ref(false)
-const timerPaused = ref(false)
-const timerFinished = ref(false)
+
+const timerStatus = ref<TimerStatus>(TimerStatus.READY)
 
 const timerEnd = ref<Date>(new Date())
 let timerTick: NodeJS.Timeout
+let timerFinishedTimeout: NodeJS.Timeout
 let timerAudio: HTMLAudioElement | undefined
 
 const DATE_TIME_START_INDEX = 11
@@ -42,30 +51,26 @@ function timeTicker() {
     .substring(DATE_TIME_START_INDEX, DATE_TIME_END_INDEX)
   if (remainingTime > 0) return
 
-  timerFinished.value = true
-  timerPaused.value = false
+  timerStatus.value = TimerStatus.FINISHED
   clearInterval(timerTick)
   timerAudio = new Audio(
     "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
   )
   timerAudio.play()
-  setTimeout(() => {
-    timerAudio?.pause()
-    timerAudio?.remove()
-  }, 10_000)
-  emits("timerFinished")
+  timerFinishedTimeout = setTimeout(stopSession, 10_000)
 }
 
 const startPauseResumeText = computed(() => {
-  if (!timerActive.value) return "Start"
-  else if (timerPaused.value) return "Resume"
-  else return "Pause"
+  if (timerStatus.value === TimerStatus.READY) return "Start"
+  else if (timerStatus.value === TimerStatus.ACTIVE) return "Pause"
+  else if (timerStatus.value === TimerStatus.PAUSED) return "Resume"
+  else return "INVALID"
 })
 
 function startPauseResume() {
-  if (!timerActive.value) startSession()
-  else if (timerPaused.value) resumeSession()
-  else pauseSession()
+  if (timerStatus.value === TimerStatus.READY) startSession()
+  else if (timerStatus.value === TimerStatus.ACTIVE) pauseSession()
+  else if (timerStatus.value === TimerStatus.PAUSED) resumeSession()
 }
 
 function startSession() {
@@ -89,7 +94,7 @@ function _startSession() {
     return
   }
 
-  timerActive.value = true
+  timerStatus.value = TimerStatus.ACTIVE
   timerEnd.value = new Date(
     ((hours * 60 + minutes) * 60 + seconds) * 1000 + Date.now(),
   )
@@ -100,22 +105,28 @@ function _startSession() {
 
 function pauseSession() {
   clearInterval(timerTick)
-  timerPaused.value = true
+  timerStatus.value = TimerStatus.PAUSED
 }
 
 function resumeSession() {
-  timerPaused.value = false
+  timerStatus.value = TimerStatus.ACTIVE
   _startSession()
 }
 
 function stopSession() {
-  timerActive.value = false
-  timerPaused.value = false
-  timerFinished.value = false
+  if (timerStatus.value === TimerStatus.FINISHED) {
+    emits("timerFinished")
+  }
+  timerStatus.value = TimerStatus.READY
+  pomodoroTimer.value = totalTimer.value
+  _cleanUp()
+}
+
+function _cleanUp() {
+  clearTimeout(timerFinishedTimeout)
   clearInterval(timerTick)
   timerAudio?.pause()
   timerAudio?.remove()
-  pomodoroTimer.value = totalTimer.value
 }
 
 function removeTimer() {
@@ -124,22 +135,24 @@ function removeTimer() {
 }
 
 function getTimerClasses() {
-  return twMerge(
-    "text-lg",
-    timerFinished.value
-      ? "text-red-500 bg-red-200 dark:text-red-400 dark:bg-red-800 animate-pulse duration-100"
-      : "",
-    timerActive.value ? "font-bold disabled:cursor-default" : "",
-  )
+  let timerStatusClasses = ""
+  if (timerStatus.value === TimerStatus.FINISHED) {
+    timerStatusClasses =
+      "text-red-500 bg-red-200 dark:text-red-400 dark:bg-red-800 animate-pulse duration-100"
+  } else if (timerStatus.value === TimerStatus.ACTIVE) {
+    timerStatusClasses = "font-bold disabled:cursor-default"
+  }
+
+  return twMerge("text-lg", timerStatusClasses)
 }
 
-onUnmounted(() => clearInterval(timerTick))
+onUnmounted(_cleanUp)
 </script>
 
 <template>
   <div class="grid gap-2 md:grid-cols-5">
     <div
-      v-if="!timerActive"
+      v-if="timerStatus !== TimerStatus.ACTIVE"
       class="w-40"
     >
       <UInput
@@ -156,23 +169,23 @@ onUnmounted(() => clearInterval(timerTick))
     <div class="w-40">
       <UInput
         v-model="pomodoroTimer"
-        :disabled="timerActive"
-        :type="timerActive ? 'text' : 'time'"
+        :disabled="timerStatus === TimerStatus.ACTIVE"
+        :type="timerStatus === TimerStatus.ACTIVE ? 'text' : 'time'"
         step="1"
         :class="getTimerClasses"
       />
     </div>
     <UButton
       @click="startPauseResume"
-      :class="timerFinished ? 'invisible' : ''"
-      :color="timerActive && !timerPaused ? 'yellow' : 'primary'"
+      :class="timerStatus === TimerStatus.FINISHED ? 'invisible' : ''"
+      :color="timerStatus === TimerStatus.ACTIVE ? 'yellow' : 'primary'"
       block
     >
       {{ startPauseResumeText }}
     </UButton>
     <UButton
       @click="stopSession"
-      :class="timerActive ? '' : 'invisible'"
+      :class="timerStatus !== TimerStatus.READY ? '' : 'invisible'"
       color="red"
       block
     >
