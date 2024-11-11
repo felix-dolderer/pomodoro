@@ -3,8 +3,6 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "db:pull": "drizzle-kit introspect:pg",
-    "db:migrate": "drizzle-kit generate:pg",
     "dev": "nuxt dev -o",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -14,7 +12,6 @@
     "@iconify-json/simple-icons": "^1.2.11",
     "@nuxt/devtools": "latest",
     "@nuxt/ui": "^2.19.2",
-    "@nuxtjs/hanko": "^0.7.0",
     "@types/node": "^22.9.0",
     "nuxt": "^3.14.159",
     "prettier": "^3.3.3",

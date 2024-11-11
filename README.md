@@ -10,14 +10,6 @@ Make sure to install the dependencies:
 bun install
 ```
 
-Make sure to add the required environment variables.
-
-```bash
-cp .sample.env .env
-```
-
-Edit the enivonment variables in the newly created file `.env`.
-
 ## Development Server
 
 Start the development server on `http://localhost:3000`:
