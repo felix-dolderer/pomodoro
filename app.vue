@@ -70,7 +70,15 @@ useHead({
             <USlideover v-model="showMenu">
               <UCard class="flex flex-col flex-1">
                 <template #header>
-                  <h2 class="text-xl font-bold">Settings</h2>
+                  <div class="flex">
+                    <h2 class="text-xl font-bold flex-grow">Settings</h2>
+                    <UButton
+                      @click="showMenu = false"
+                      icon="i-heroicons-x-circle"
+                      variant="ghost"
+                      color="neutral"
+                    />
+                  </div>
                 </template>
                 <ClientOnly>
                   <ConfigTimerPreset />
