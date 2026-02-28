@@ -15,7 +15,7 @@
     "@types/node": "^22.9.0",
     "nuxt": "^3.14.159",
     "prettier": "^3.8.1",
-    "undici": "^6.20.1"
+    "undici": "^7.22.0"
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1",
