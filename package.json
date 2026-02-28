@@ -12,7 +12,7 @@
     "@iconify-json/simple-icons": "^1.2.71",
     "@nuxt/devtools": "latest",
     "@nuxt/ui": "^2.19.2",
-    "@types/node": "^22.9.0",
+    "@types/node": "^25.3.2",
     "nuxt": "^3.14.159",
     "prettier": "^3.8.1",
     "undici": "^7.22.0"
@@ -20,7 +20,7 @@
   "dependencies": {
     "@vercel/analytics": "^1.6.1",
     "nanoid": "^5.1.6",
-    "tailwind-merge": "^2.5.4",
+    "tailwind-merge": "^3.5.0",
     "zod": "^4.3.6"
   },
   "trustedDependencies": [
