@@ -1,9 +1,10 @@
 // #region general
 
 export const LOCAL_STORAGE_TOKENS = Object.freeze({
-  AUTO_PLAY: "autoPlay",
-  AUTO_REMOVE: "autoRemove",
-  TIMER_PRESET: "timerPreset",
+  CONFIG_AUTO_PLAY: "autoPlay",
+  CONFIG_AUTO_REMOVE: "autoRemove",
+  CONFIG_TIMER_PRESET: "timerPreset",
+  TIMERS: "timers",
 })
 
 // #endregion general
@@ -13,7 +14,7 @@ export const LOCAL_STORAGE_TOKENS = Object.freeze({
 // localStorage maybe undefined due to SSR
 // components that use this composable should be wrapped in <ClientOnly>
 export const useAutoPlay = () =>
-  useState<boolean>(LOCAL_STORAGE_TOKENS.AUTO_PLAY, initAutoPlay)
+  useState<boolean>(LOCAL_STORAGE_TOKENS.CONFIG_AUTO_PLAY, initAutoPlay)
 
 function initAutoPlay() {
   const autoPlayDefault = true
@@ -24,7 +25,9 @@ function initAutoPlay() {
     return autoPlayDefault
   }
 
-  const autoPlayStored = localStorage.getItem(LOCAL_STORAGE_TOKENS.AUTO_PLAY)
+  const autoPlayStored = localStorage.getItem(
+    LOCAL_STORAGE_TOKENS.CONFIG_AUTO_PLAY,
+  )
 
   if (autoPlayStored === null) {
     return autoPlayDefault
@@ -40,7 +43,7 @@ function initAutoPlay() {
 // localStorage maybe undefined due to SSR
 // components that use this composable should be wrapped in <ClientOnly>
 export const useAutoRemove = () =>
-  useState<boolean>(LOCAL_STORAGE_TOKENS.AUTO_REMOVE, initAutoRemove)
+  useState<boolean>(LOCAL_STORAGE_TOKENS.CONFIG_AUTO_REMOVE, initAutoRemove)
 
 function initAutoRemove() {
   const autoRemoveDefault = true
@@ -52,7 +55,7 @@ function initAutoRemove() {
   }
 
   const autoRemoveStored = localStorage.getItem(
-    LOCAL_STORAGE_TOKENS.AUTO_REMOVE,
+    LOCAL_STORAGE_TOKENS.CONFIG_AUTO_REMOVE,
   )
 
   if (autoRemoveStored === null) {
@@ -69,7 +72,7 @@ function initAutoRemove() {
 // localStorage maybe undefined due to SSR
 // components that use this composable should be wrapped in <ClientOnly>
 export const useTimerPreset = () =>
-  useState<string>(LOCAL_STORAGE_TOKENS.TIMER_PRESET, initTimerPreset)
+  useState<string>(LOCAL_STORAGE_TOKENS.CONFIG_TIMER_PRESET, initTimerPreset)
 
 function initTimerPreset() {
   const timerPresetDefault = "00:30:00.000"
@@ -81,7 +84,7 @@ function initTimerPreset() {
   }
 
   const storedTimerPreset = localStorage.getItem(
-    LOCAL_STORAGE_TOKENS.TIMER_PRESET,
+    LOCAL_STORAGE_TOKENS.CONFIG_TIMER_PRESET,
   )
 
   const timerRegex = /^(\d{2}):(\d{2}):(\d{2})?$/

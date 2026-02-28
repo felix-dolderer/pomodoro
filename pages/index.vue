@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { nanoid } from "nanoid"
+import { z } from "zod"
 
-const allTimers = ref<{ id: string; startTimer?: boolean }[]>([
-  { id: nanoid(), startTimer: false },
-])
+const timerSchema = z.object({
+  id: z.string(),
+  startTimer: z.boolean().optional(),
+})
+type Timer = z.infer<typeof timerSchema>
+
+const allTimers = ref<Timer[]>([{ id: nanoid(), startTimer: false }])
 
 function addTimer() {
   allTimers.value.push({ id: nanoid() })
@@ -41,6 +46,32 @@ function timerFinished(id: string) {
 
   allTimers.value[0].startTimer = true
 }
+
+function _initTimers() {
+  const timersDefault: Timer[] = []
+
+  try {
+    if (!localStorage) return timersDefault
+  } catch (_) {
+    return timersDefault
+  }
+
+  const timersStored = localStorage.getItem(LOCAL_STORAGE_TOKENS.TIMERS)
+
+  if (timersStored === null) {
+    return timersDefault
+  }
+  const parsedTimers = timerSchema.array().safeParse(JSON.parse(timersStored))
+
+  if (!parsedTimers.success) {
+    return timersDefault
+  }
+  return parsedTimers.data
+}
+
+onMounted(() => {
+  allTimers.value = _initTimers()
+})
 </script>
 
 <template>

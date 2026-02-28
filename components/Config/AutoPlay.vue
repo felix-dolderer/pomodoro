@@ -6,7 +6,10 @@ const emits = defineEmits<{
 const autoPlay = useAutoPlay()
 
 function safeAutoPlay() {
-  localStorage.setItem(LOCAL_STORAGE_TOKENS.AUTO_PLAY, String(autoPlay.value))
+  localStorage.setItem(
+    LOCAL_STORAGE_TOKENS.CONFIG_AUTO_PLAY,
+    String(autoPlay.value),
+  )
 
   useToast().add({ title: "Successfully saved auto-play settings" })
   emits("save")

@@ -7,7 +7,7 @@ const autoRemove = useAutoRemove()
 
 function safeAutoRemove() {
   localStorage.setItem(
-    LOCAL_STORAGE_TOKENS.AUTO_REMOVE,
+    LOCAL_STORAGE_TOKENS.CONFIG_AUTO_REMOVE,
     String(autoRemove.value),
   )
 
