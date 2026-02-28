@@ -20,7 +20,7 @@ function safeAutoPlay() {
   <div class="grid gap-2">
     <UCheckbox
       v-model="autoPlay"
-      @change="safeAutoPlay"
+      @update:model-value="safeAutoPlay"
       label="Auto-Play"
     />
   </div>

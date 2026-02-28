@@ -91,7 +91,7 @@ onMounted(() => {
     </ClientOnly>
     <UButton
       @click="addTimer"
-      color="black"
+      color="neutral"
       class="mx-auto w-40"
     >
       <span class="w-full text-center">

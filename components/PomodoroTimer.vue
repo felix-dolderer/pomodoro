@@ -178,7 +178,7 @@ onUnmounted(_cleanUp)
     <UButton
       @click="startPauseResume"
       :class="timerStatus === TimerStatus.FINISHED ? 'invisible' : ''"
-      :color="timerStatus === TimerStatus.ACTIVE ? 'yellow' : 'primary'"
+      :color="timerStatus === TimerStatus.ACTIVE ? 'warning' : 'primary'"
       block
     >
       {{ startPauseResumeText }}
@@ -186,16 +186,16 @@ onUnmounted(_cleanUp)
     <UButton
       @click="stopSession"
       :class="timerStatus !== TimerStatus.READY ? '' : 'invisible'"
-      color="red"
+      color="error"
       block
     >
       Stop
     </UButton>
     <UButton
       @click="removeTimer"
-      icon="i-heroicons-x-circle"
+      icon="i-lucide-x-circle"
       variant="outline"
-      color="red"
+      color="error"
       block
     >
       Remove

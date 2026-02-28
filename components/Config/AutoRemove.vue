@@ -20,7 +20,7 @@ function safeAutoRemove() {
   <div class="grid gap-2">
     <UCheckbox
       v-model="autoRemove"
-      @change="safeAutoRemove"
+      @update:model-value="safeAutoRemove"
       label="Auto-Remove Finished Timers"
     />
   </div>

@@ -10,7 +10,7 @@ defineProps<{
     :to="to"
     :icon="icon"
     target="_blank"
-    color="gray"
+    color="neutral"
     variant="ghost"
   />
 </template>

@@ -23,7 +23,7 @@ function saveTimerPreset() {
     @submit.prevent="saveTimerPreset"
     class="grid gap-2"
   >
-    <UFormGroup
+    <UFormField
       name="timerPreset"
       label="Default Timer Value"
     >
@@ -32,7 +32,7 @@ function saveTimerPreset() {
         type="time"
         step="1"
       />
-    </UFormGroup>
+    </UFormField>
     <UButton
       block
       type="submit"
